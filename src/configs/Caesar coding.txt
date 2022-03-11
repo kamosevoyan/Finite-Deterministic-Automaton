@@ -1,0 +1,16 @@
+    a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
+a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
+
+
+q0
+
+c,q0|d,q0|e,q0|f,q0|g,q0|h,q0|i,q0|j,q0|k,q0|l,q0|m,q0|n,q0|o,q0|p,q0|q,q0|r,q0|s,q0|t,q0|u,q0|v,q0|w,q0|x,q0|y,q0|z,q0|a,q0|b,q0
+
+
+
+q0
+
+
+iwanttobreakfreefromyourlies
+
+ihaveadream
