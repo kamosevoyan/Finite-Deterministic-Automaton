@@ -7,7 +7,5 @@ int main(int argc, char* argv[])
 	std:: cout << automat.setInput("kamosevoyan") << "\n";
 
 	automat.setInput("");
-	// automat.get_lambda();
-	// automat.get_delta();
 	return 0;
 }
