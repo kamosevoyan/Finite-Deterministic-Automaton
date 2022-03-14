@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <vector>
 #include <cassert>
+#include <utility>
 
 class DFAutomaton
 {
@@ -25,13 +26,21 @@ class DFAutomaton
 	private:
 
 		std::map<std::string, std::string> transitionFunctions;
+		std::map<std::pair<std::string, std::string>, std::string> lambda;
+		std::map<std::pair<std::string, std::string>, std::string> delta;
+		
 		std::string initalState;
 		bool constructed = false;
 
 	public: 
-		void print()
+		void get_lambda()
 		{
-			for (auto item : this->transitionFunctions)
+			for (auto item : this->lambda)
+				std::cout<<item.second<<std::endl;
+		}
+		void get_delta()
+		{
+			for (auto item : this->delta)
 				std::cout<<item.second<<std::endl;
 		}
 };

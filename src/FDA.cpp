@@ -11,7 +11,10 @@ std::string DFAutomaton::setInput(const std::string& tape)
 	}
 
 	if (tape.length() == 0)
-		throw -1;
+	{
+		std::cerr << "Error: null input\n";
+		return "";
+	}
 
 #ifdef DEBUG
 	std::cout<<"Input tape: "<<tape<<std::endl;
@@ -20,7 +23,7 @@ std::string DFAutomaton::setInput(const std::string& tape)
 	std::string ret;
 	ret.reserve(tape.size());
 	std::string state = this->initalState;
-	std::string temp, output;
+	std::string  output;
 
 #ifdef DEBUG
 	std::cout<<"Begin state "<<initalState<<"\n\n";
@@ -34,23 +37,23 @@ std::string DFAutomaton::setInput(const std::string& tape)
 		std::cout<<"state = "<<state<<"\n";
 #endif
 
-		auto k = state + "," + item;
+		auto key = std::make_pair(state, std::string(1,item));
 
-		if (this->transitionFunctions.find(k) != this->transitionFunctions.end())
+		if ((this->lambda.find(key) != this->lambda.end()) && (this->delta.find(key) != this->delta.end() ))
 		{
-			temp = this->transitionFunctions[state + "," + item];
-			output  = temp.substr(0, temp.find(","));
-			state = temp.substr(temp.find(",") + 1, temp.length() - 1);
+			state = this->lambda[key];
+			output = this->delta[key];
+			
 		}
 		else
 		{
-			std::cout<<"Error: unknown input value " << item<<std::endl;
+			std::cerr<<"Error: unknown input value " << item<<std::endl;
 			return "";
 		}
 
 #ifdef DEBUG
 		std::cout<<"Output = "<<output<<"\n";
-		std::cout<<"To state "<< temp<<"\n";
+		std::cout<<"To state "<< state <<"\n";
 		std::cout<<"********************************\n\n\n\n";
 #endif
 
@@ -132,7 +135,7 @@ void DFAutomaton::setConfiguration(const std::string& path)
 			inputSymbols.push_back(token);
 		else
 		{
-			std::cout<<"Error: input alphabet value "<< token <<" is already given"<<std::endl;
+			std::cerr<<"Error: input alphabet value "<< token <<" is already given"<<std::endl;
 			return;
 		}
 	}
@@ -144,7 +147,7 @@ void DFAutomaton::setConfiguration(const std::string& path)
 			outputSymbols.push_back(token);
 		else
 		{
-			std::cout<<"Error: output alphabet value "<<token<<" is already given"<<std::endl;
+			std::cerr<<"Error: output alphabet value "<<token<<" is already given"<<std::endl;
 			return;
 		}
 
@@ -157,7 +160,7 @@ void DFAutomaton::setConfiguration(const std::string& path)
 			stateSymbols.push_back(token);
 		else
 		{
-			std::cout<<"Error: state "<<token<<" is already given"<<std::endl;
+			std::cerr<<"Error: state "<<token<<" is already given"<<std::endl;
 			return;
 		}
 	}
@@ -196,7 +199,7 @@ void DFAutomaton::setConfiguration(const std::string& path)
 				break;
 			if (data.tellg() == std::string::npos)
 			{
-				std::cout<<"Error: configuration values for state " << stateSymbols[row]<<" and below are not given\n";
+				std::cerr<<"Error: configuration values for state " << stateSymbols[row]<<" and below are not given\n";
 				return;
 			}
 		}
@@ -208,7 +211,7 @@ void DFAutomaton::setConfiguration(const std::string& path)
 		{
 			if (lmDt.tellg() == std::string::npos)
 			{
-				std::cout<<"Error: less values than expected in "<<row<< " row "<<column<< " column "<<std::endl;
+				std::cerr<<"Error: less values than expected in "<<row<< " row "<<column<< " column "<<std::endl;
 				return;
 			}
 
@@ -221,23 +224,24 @@ void DFAutomaton::setConfiguration(const std::string& path)
 			
 			if(std::find(outputSymbols.begin(), outputSymbols.end(), ltoken) == outputSymbols.end())
 			{
-				std::cout<<"Error: unknows output value "<< ltoken<<" in "<<row<<" row "<<column<<" column "<<std::endl;
+				std::cerr<<"Error: unknows output value "<< ltoken<<" in "<<row<<" row "<<column<<" column "<<std::endl;
 				return;
 			}
 
 
 			if(std::find(stateSymbols.begin(), stateSymbols.end(), rtoken) == stateSymbols.end())
 			{
-				std::cout<<"Error: unknown state value "<< rtoken<<" in "<<row<<" row "<<column<<" column "<<std::endl;
+				std::cerr<<"Error: unknown state value "<< rtoken<<" in "<<row<<" row "<<column<<" column "<<std::endl;
 				return;
 			}
-
-			this->transitionFunctions[stateSymbols[row] + "," + inputSymbols[column]] = token;
+			
+			this->lambda[std::make_pair(stateSymbols[row], inputSymbols[column])] = rtoken;
+			this->delta[std::make_pair(stateSymbols[row], inputSymbols[column])] = ltoken;
 		}		
 		
 		if(lmDt.tellg() != std::string::npos)
 		{
-			std::cout<<"Error: more values in "<<row<<" row than expected"<<std::endl;
+			std::cerr<<"Error: more values in "<<row<<" row than expected"<<std::endl;
 			return;
 		}
 	}
@@ -249,7 +253,7 @@ void DFAutomaton::setConfiguration(const std::string& path)
 			break;
 		if(data.tellg() == std::string::npos)
 		{
-			std::cout<<"Error: initial state value is not given\n";
+			std::cerr<<"Error: initial state value is not given\n";
 			return;
 		}
 	}
@@ -258,7 +262,7 @@ void DFAutomaton::setConfiguration(const std::string& path)
 
 	if (std::find(stateSymbols.begin(), stateSymbols.end(), token) == stateSymbols.end())
 	{
-		std::cout<<"Error: unknown initial state value "<<token<<std::endl;
+		std::cerr<<"Error: unknown initial state value "<<token<<std::endl;
 		return;
 	}
 
