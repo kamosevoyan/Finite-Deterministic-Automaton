@@ -1,12 +1,11 @@
 #include "FDA.h"
 //#define DEBUG
 
-
-std::string DFAutomaton::setInput(const std::string& tape)
+std::string DFAutomaton::setInput(const std::string& tape) &
 {
 	if (!constructed)
 	{
-		std::cout<<"The automaton is not constructed yet.\n";
+		std::cerr<<"The automaton is not constructed yet.\n";
 		return "";
 	}
 
@@ -81,7 +80,7 @@ DFAutomaton::DFAutomaton()
 
 }
 
-void DFAutomaton::setConfiguration(const std::string& path)
+void DFAutomaton::setConfiguration(const std::string& path)&
 {
 	std::vector<std::string> inputSymbols;
 	std::vector<std::string> outputSymbols;
@@ -203,6 +202,7 @@ void DFAutomaton::setConfiguration(const std::string& path)
 				return;
 			}
 		}
+			
 			
 		lmDt = std::stringstream(lambdaDelta);
 
