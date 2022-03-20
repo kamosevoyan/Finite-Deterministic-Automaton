@@ -183,7 +183,7 @@ void DFAutomaton::setConfiguration(const std::string& path)&
 
 	std::cout<<"***********************************\n\n\n\n";
 
-	std::cout<<"States alphabet valuses \n";
+	std::cout<<"States alphabet values \n";
 	for (auto a: stateSymbols)
 		std::cout<<a<<"\n";
 	std::cout<<"************************************\n\n\n\n";
