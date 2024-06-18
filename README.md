@@ -1,2 +1,2 @@
 # Finite-Deterministic-Automaton
-Finite Deterministic Automaton realisation
+Finite Deterministic Automaton implementation
